@@ -9,14 +9,7 @@ ctx.verify_mode = ssl.CERT_NONE
 
 # item_name = input('Enter the item name:')
 def product_fn(item_name=None):
-	if ' ' in item_name:
-		temp = item_name.split(' ')
-		var = ''
-		for i in range(len(temp)):
-			var += temp[i] 
-			if i != len(temp)-1:
-				var += '%20'
-		item_name = var
+	item_name = item_name.strip().replace(' ','%20')
 	    
 	names = []
 	prices = []
@@ -27,11 +20,11 @@ def product_fn(item_name=None):
 		          '&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page='+str(i+1))
 		data = response.text
 		soup = BeautifulSoup(data,'html.parser')
-		items = soup.find_all(class_='_3O0U0u')#dict of {class:.} won't work here👍
+		items = soup.find_all(class_='_1AtVbE')#dict of {class:.} won't work here👍
 		for item in items:
-			name = item.find('div',{'class':'_3wU53n'})
-			price = item.find('div',{'class':'_1vC4OE _2rQ-NK'})
-			rating = item.find('div',{'class':'hGSR34'})
+			name = item.find('div',{'class':'_4rR01T'})
+			price = item.find('div',{'class':'_30jeq3 _1_WHN1'})
+			rating = item.find('div',{'class':'_3LWZlK'})
 			if None in (name, price, rating):
 				continue
 			names.append(name.text.strip())

@@ -1,12 +1,8 @@
 from app import app
 from app import server
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html, dcc
 from dash.dependencies import Input, Output,State
-from datetime import datetime
-import dash_table
 import pandas as pd
-from decouple import config
 import plotly.express as px
 
 app.layout = html.Div([dcc.Input(id = 'input-box',
@@ -31,18 +27,14 @@ def update_output(n_clicks,input1):
 
 from data import product_fn
 @app.callback(Output('table','children'),
-	[Input('button','children')])
-def kuchbhifunction(data):
-	#output checking
-	with open('string.txt') as file: 
-		# for line in file.readlines()[-1:]: #reading last line of a file
-		# 	print(line,end='')
-		item = file.readlines()[-1:]
-		item = ' '.join(item)
-	product_fn(item)
+	[Input('button','n_clicks')],
+	[State('input-box', 'value')])
+def kuchbhifunction(data,item_name):
+	product_fn(item_name)
 	products = pd.read_csv('data.csv')
 	fig = px.scatter(products,x='Product',y='Price(in Rs.)',size='Rating',color = 'Price(in Rs.)')
 	# fig.update_layout(height)
+	fig.update_xaxes(showticklabels=False)
 	return html.Div([html.Div(children=[dcc.Graph(id='dist-chart', figure=fig)],
                             style={'display': 'inline-block', 'textAlign': 'center'})])
 

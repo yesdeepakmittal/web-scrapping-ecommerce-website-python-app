@@ -1,6 +1,1 @@
-
-
-laptop
-laptop
-
-laptop
+In this file, all of your search query will be stored
